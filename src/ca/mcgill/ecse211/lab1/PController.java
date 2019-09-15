@@ -3,10 +3,6 @@ package ca.mcgill.ecse211.lab1;
 import static ca.mcgill.ecse211.lab1.Resources.*;
 
 public class PController extends UltrasonicController {
-  
-  /*
-   * Need to work on this class
-   */
 
   private static final int MOTOR_SPEED = 200;
 
@@ -22,31 +18,17 @@ public class PController extends UltrasonicController {
     filter(distance);
 
     // TODO: process a movement based on the us distance passed in (P style)
-    // rudimentary filter - toss out invalid samples corresponding to null signal.
-    // (n.b. this was not included in the Bang-bang controller, but easily could have).
-    if (distance >= 255 && filterControl < FILTER_OUT) {
-      // bad value, do not set the distance var, however do increment the filter value
-      filterControl++;
-    } else if (distance >= 255) {
-      // We have repeated large values, so there must actually be nothing there: leave the distance
-      // alone
-      this.distance = distance;
-    } else {
-      // distance went below 255: reset filter and leave distance alone.
-      filterControl = 0;
-      this.distance = distance;
-    }
 
-    int diff = distance - BAND_CENTER - 5;
+    int diff = distance - BAND_CENTER - (BAND_WIDTH / 2);
     int deltaSpeed = 0;
 
     if (diff > BAND_WIDTH) { // Robot is too far from wall
       if (diff > 28) { // Robot is very far from wall
-        deltaSpeed = 65 + (500 / diff);
+        deltaSpeed = 100 + (500 / diff);
 
         // Make wider turn
         LEFT_MOTOR.setSpeed(MOTOR_SPEED - (deltaSpeed / 2));
-        RIGHT_MOTOR.setSpeed(MOTOR_SPEED + deltaSpeed);
+        RIGHT_MOTOR.setSpeed(MOTOR_SPEED + (deltaSpeed / 2));
         LEFT_MOTOR.forward();
         RIGHT_MOTOR.forward();
         return;
