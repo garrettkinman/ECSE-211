@@ -3,6 +3,10 @@ package ca.mcgill.ecse211.lab1;
 import static ca.mcgill.ecse211.lab1.Resources.*;
 
 public class PController extends UltrasonicController {
+  
+  /*
+   * Need to work on this class
+   */
 
   private static final int MOTOR_SPEED = 200;
 
